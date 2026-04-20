@@ -26,7 +26,7 @@ const Index = () => {
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center container-luxury">
           <p className="eyebrow mb-6 animate-fade-in" style={{ animationDelay: "200ms" }}>
-            Restaurant Semi-Gastronomique · Ay-sur-Moselle
+            Restaurant · Ay-sur-Moselle
           </p>
           <h1
             className="font-display text-cream text-6xl md:text-8xl lg:text-9xl leading-[0.95] mb-8 animate-fade-in-up"
