@@ -1,18 +1,19 @@
 import { Layout } from "@/components/layout/Layout";
 import { Ornament } from "@/components/sections/Ornament";
-import { menuItems, categoryLabels, MenuItem } from "@/data/menu";
 import { Link } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
 import beefAged from "@/assets/beef-aged.jpg";
+import { useMenuData, DbMenuItem } from "@/hooks/useMenuData";
+import { Loader2 } from "lucide-react";
 
-const ItemRow = ({ item }: { item: MenuItem }) => (
+const ItemRow = ({ item }: { item: DbMenuItem }) => (
   <div className="group py-6 border-b border-border/40 last:border-0 transition-colors hover:bg-card/40 px-4 -mx-4">
     <div className="flex items-baseline justify-between gap-4 mb-2">
       <h4 className="font-display text-2xl text-cream group-hover:text-primary transition-colors">
         {item.name}
       </h4>
       <div className="flex-1 border-b border-dotted border-border/50 mx-4 mb-2" />
-      <span className="font-display text-2xl text-primary whitespace-nowrap">{item.price} €</span>
+      <span className="font-display text-2xl text-primary whitespace-nowrap">{Number(item.price)} €</span>
     </div>
     <p className="text-muted-foreground font-light text-sm leading-relaxed max-w-2xl">
       {item.description}
@@ -21,7 +22,7 @@ const ItemRow = ({ item }: { item: MenuItem }) => (
 );
 
 const Carte = () => {
-  const cats: MenuItem["category"][] = ["entree", "viande", "pates", "burger", "dessert"];
+  const { categories, items, loading } = useMenuData(true);
 
   return (
     <Layout>
@@ -42,15 +43,17 @@ const Carte = () => {
 
       <section className="py-24 bg-background">
         <div className="container-luxury max-w-4xl">
-          {cats.map((cat) => {
-            const items = menuItems.filter((i) => i.category === cat);
+          {loading && <div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>}
+          {!loading && categories.map((cat) => {
+            const catItems = items.filter((i) => i.category_id === cat.id);
+            if (catItems.length === 0) return null;
             return (
-              <div key={cat} className="mb-20 reveal">
+              <div key={cat.id} className="mb-20 reveal">
                 <div className="text-center mb-12">
-                  <Ornament label={categoryLabels[cat]} />
+                  <Ornament label={cat.label} />
                 </div>
                 <div>
-                  {items.map((it) => (
+                  {catItems.map((it) => (
                     <ItemRow key={it.id} item={it} />
                   ))}
                 </div>

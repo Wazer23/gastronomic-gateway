@@ -1,11 +1,16 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { MenuItem } from "@/data/menu";
 
-export type CartLine = { item: MenuItem; quantity: number };
+export type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  image_url?: string | null;
+};
+export type CartLine = { item: CartItem; quantity: number };
 
 type CartCtx = {
   lines: CartLine[];
-  add: (item: MenuItem) => void;
+  add: (item: CartItem) => void;
   remove: (id: string) => void;
   setQty: (id: string, qty: number) => void;
   clear: () => void;
@@ -18,7 +23,7 @@ const Ctx = createContext<CartCtx | null>(null);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [lines, setLines] = useState<CartLine[]>([]);
 
-  const add = (item: MenuItem) =>
+  const add = (item: CartItem) =>
     setLines((prev) => {
       const existing = prev.find((l) => l.item.id === item.id);
       if (existing) return prev.map((l) => (l.item.id === item.id ? { ...l, quantity: l.quantity + 1 } : l));
