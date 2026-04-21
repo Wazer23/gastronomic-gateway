@@ -110,7 +110,9 @@ const AdminMenu = () => {
       return;
     }
     const payload = {
-      ...parsed.data,
+      name: parsed.data.name,
+      price: parsed.data.price,
+      category_id: parsed.data.category_id,
       description: form.description,
       image_url: form.image_url || null,
       available: form.available,
