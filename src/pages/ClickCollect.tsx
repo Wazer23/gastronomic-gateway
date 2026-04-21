@@ -1,25 +1,24 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Ornament } from "@/components/sections/Ornament";
-import { menuItems, categoryLabels, MenuItem } from "@/data/menu";
 import { useCart } from "@/context/CartContext";
-import { Plus, Minus, ShoppingBag, Trash2, Check, Clock, X } from "lucide-react";
+import { Plus, Minus, ShoppingBag, Trash2, Check, Clock, X, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import burger from "@/assets/burger.jpg";
+import { useMenuData, DbMenuItem } from "@/hooks/useMenuData";
+import { supabase } from "@/integrations/supabase/client";
 
-const cats: MenuItem["category"][] = ["entree", "viande", "pates", "burger", "dessert"];
-
-const ItemCard = ({ item, onAdd }: { item: MenuItem; onAdd: () => void }) => (
+const ItemCard = ({ item, onAdd }: { item: DbMenuItem; onAdd: () => void }) => (
   <div className="group bg-card border border-border hover:border-primary/50 transition-all duration-500 overflow-hidden flex flex-col">
-    {item.image && (
+    {item.image_url && (
       <div className="relative aspect-[4/3] overflow-hidden">
-        <img src={item.image} alt={item.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <img src={item.image_url} alt={item.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
       </div>
     )}
     <div className="p-6 flex-1 flex flex-col">
       <div className="flex items-baseline justify-between gap-3 mb-2">
         <h4 className="font-display text-xl text-cream group-hover:text-primary transition-colors">{item.name}</h4>
-        <span className="font-display text-xl text-primary whitespace-nowrap">{item.price} €</span>
+        <span className="font-display text-xl text-primary whitespace-nowrap">{Number(item.price)} €</span>
       </div>
       <p className="text-sm text-muted-foreground font-light leading-relaxed mb-6 flex-1">{item.description}</p>
       <button onClick={onAdd} className="border border-border hover:border-primary hover:bg-primary hover:text-primary-foreground text-cream py-2.5 px-4 text-xs uppercase tracking-luxury transition-all duration-300 flex items-center justify-center gap-2">
@@ -32,20 +31,55 @@ const ItemCard = ({ item, onAdd }: { item: MenuItem; onAdd: () => void }) => (
 const ClickCollect = () => {
   const { lines, add, setQty, remove, clear, count, total } = useCart();
   const { toast } = useToast();
-  const [activeCat, setActiveCat] = useState<MenuItem["category"]>("entree");
+  const { categories, items, loading } = useMenuData(true);
+  const [activeCat, setActiveCat] = useState<string>("");
   const [cartOpen, setCartOpen] = useState(false);
   const [confirmed, setConfirmed] = useState<{ name: string; pickup: string } | null>(null);
-  const [info, setInfo] = useState({ name: "", phone: "", pickup: "" });
+  const [info, setInfo] = useState({ name: "", email: "", phone: "", pickup: "" });
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleConfirm = () => {
-    if (!info.name || !info.phone || !info.pickup) {
+  const handleConfirm = async () => {
+    if (!info.name || !info.email || !info.phone || !info.pickup) {
       toast({ title: "Informations manquantes", description: "Merci de compléter vos coordonnées et l'horaire.", variant: "destructive" });
+      return;
+    }
+    setSubmitting(true);
+    const { data: order, error } = await supabase
+      .from("orders")
+      .insert({
+        customer_name: info.name,
+        customer_email: info.email,
+        customer_phone: info.phone,
+        pickup_at: new Date(info.pickup).toISOString(),
+        total,
+        status: "received",
+      })
+      .select()
+      .single();
+    if (error || !order) {
+      toast({ title: "Erreur", description: error?.message ?? "Impossible d'enregistrer la commande", variant: "destructive" });
+      setSubmitting(false);
+      return;
+    }
+    const { error: itemsErr } = await supabase.from("order_items").insert(
+      lines.map((l) => ({
+        order_id: order.id,
+        menu_item_id: l.item.id,
+        item_name: l.item.name,
+        unit_price: l.item.price,
+        quantity: l.quantity,
+      })),
+    );
+    if (itemsErr) {
+      toast({ title: "Erreur", description: itemsErr.message, variant: "destructive" });
+      setSubmitting(false);
       return;
     }
     setConfirmed({ name: info.name, pickup: info.pickup });
     clear();
     setCartOpen(false);
-    setInfo({ name: "", phone: "", pickup: "" });
+    setInfo({ name: "", email: "", phone: "", pickup: "" });
+    setSubmitting(false);
   };
 
   return (

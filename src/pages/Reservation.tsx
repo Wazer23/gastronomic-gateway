@@ -4,6 +4,7 @@ import { Ornament } from "@/components/sections/Ornament";
 import { CalendarDays, Clock, Users, Phone, Check } from "lucide-react";
 import restaurantInterior from "@/assets/restaurant-interior.jpg";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const slots = ["12:00", "12:30", "13:00", "13:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"];
 
@@ -14,10 +15,24 @@ const Reservation = () => {
     name: "", email: "", phone: "", date: "", time: "", guests: "2", note: "",
   });
 
-  const handle = (e: React.FormEvent) => {
+  const handle = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.phone || !form.date || !form.time) {
       toast({ title: "Champs manquants", description: "Veuillez compléter tous les champs requis.", variant: "destructive" });
+      return;
+    }
+    const { error } = await supabase.from("reservations").insert({
+      customer_name: form.name,
+      customer_email: form.email,
+      customer_phone: form.phone,
+      reservation_date: form.date,
+      reservation_time: form.time,
+      guests: Number(form.guests),
+      note: form.note || null,
+      status: "pending",
+    });
+    if (error) {
+      toast({ title: "Erreur", description: error.message, variant: "destructive" });
       return;
     }
     setSubmitted(true);
