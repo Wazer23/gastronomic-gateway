@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import logo from "@/assets/logo-boeuf-epi.png";
@@ -27,6 +28,42 @@ export const Header = () => {
   }, []);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  const mobileMenu = (
+    <div
+      className={`lg:hidden fixed inset-0 z-[100] isolate transition-all duration-300 ${
+        open ? "visible opacity-100 pointer-events-auto" : "invisible opacity-0 pointer-events-none"
+      }`}
+      aria-hidden={!open}
+    >
+      <div className="absolute inset-0 bg-night-deep" />
+
+      <div className="relative flex h-full flex-col bg-night-deep">
+        <div className="flex items-center justify-between border-b border-border/60 px-6 py-6">
+          <img src={logo} alt="Le Bœuf et l'Épi" className="h-12 w-auto" />
+          <button onClick={() => setOpen(false)} aria-label="Fermer" className="text-cream p-2">
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <nav className="relative flex flex-1 flex-col items-center justify-center gap-8 px-8 text-center">
+          {links.map((l, i) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.to === "/"}
+              className={({ isActive }) =>
+                `font-display text-3xl leading-none transition-colors ${isActive ? "text-primary" : "text-cream"}`
+              }
+              style={{ animationDelay: `${i * 60}ms` }}
+            >
+              {l.label}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
 
   return (
     <header
@@ -90,35 +127,7 @@ export const Header = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
-      <div
-        className={`lg:hidden fixed inset-0 z-[100] transition-all duration-500 ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        style={{ backgroundColor: "hsl(222 55% 5%)" }}
-      >
-        <div className="flex justify-between items-center p-6 relative z-10">
-          <img src={logo} alt="" className="h-12 w-auto" />
-          <button onClick={() => setOpen(false)} aria-label="Fermer" className="text-cream p-2">
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-        <nav className="flex flex-col items-center gap-8 mt-12 relative z-10">
-          {links.map((l, i) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              end={l.to === "/"}
-              className={({ isActive }) =>
-                `font-display text-3xl transition-colors ${isActive ? "text-primary" : "text-cream"}`
-              }
-              style={{ animationDelay: `${i * 60}ms` }}
-            >
-              {l.label}
-            </NavLink>
-          ))}
-        </nav>
-      </div>
+      {typeof document !== "undefined" ? createPortal(mobileMenu, document.body) : null}
     </header>
   );
 };
