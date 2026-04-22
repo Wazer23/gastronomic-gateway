@@ -1,5 +1,5 @@
-import { ReactNode, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   UtensilsCrossed,
@@ -27,7 +27,7 @@ const nav = [
   { to: "/admin/team", label: "Équipe", icon: Users, manager: true },
 ];
 
-export const AdminLayout = ({ children }: { children: ReactNode }) => {
+export const AdminLayout = () => {
   const { user, isManager, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -145,7 +145,7 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
         </div>
       )}
 
-      <main className="flex-1 lg:ml-0 pt-[60px] lg:pt-0">{children}</main>
+      <main className="flex-1 lg:ml-0 pt-[60px] lg:pt-0"><Outlet /></main>
     </div>
   );
 };

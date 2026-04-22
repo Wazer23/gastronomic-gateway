@@ -116,34 +116,51 @@ const ClickCollect = () => {
             </div>
           )}
 
-          {/* Catégories */}
-          <div className="flex flex-wrap gap-2 justify-center mb-12 sticky top-20 bg-background/80 backdrop-blur-md py-4 z-30 -mx-6 px-6 border-b border-border/30">
-            {cats.map((c) => (
-              <button
-                key={c}
-                onClick={() => {
-                  setActiveCat(c);
-                  document.getElementById(`cat-${c}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-                className={`px-5 py-2 text-xs uppercase tracking-luxury transition-all duration-300 ${
-                  activeCat === c ? "bg-primary text-primary-foreground" : "border border-border text-cream/80 hover:border-primary hover:text-primary"
-                }`}
-              >
-                {categoryLabels[c]}
-              </button>
-            ))}
-          </div>
-
-          {cats.map((c) => (
-            <div key={c} id={`cat-${c}`} className="mb-20 scroll-mt-40">
-              <Ornament label={categoryLabels[c]} />
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-                {menuItems.filter((i) => i.category === c).map((it) => (
-                  <ItemCard key={it.id} item={it} onAdd={() => { add(it); toast({ title: "Ajouté au panier", description: it.name }); }} />
+          {loading ? (
+            <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>
+          ) : (
+            <>
+              {/* Catégories */}
+              <div className="flex flex-wrap gap-2 justify-center mb-12 sticky top-20 bg-background/80 backdrop-blur-md py-4 z-30 -mx-6 px-6 border-b border-border/30">
+                {categories.map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => {
+                      setActiveCat(c.slug);
+                      document.getElementById(`cat-${c.slug}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                    className={`px-5 py-2 text-xs uppercase tracking-luxury transition-all duration-300 ${
+                      activeCat === c.slug ? "bg-primary text-primary-foreground" : "border border-border text-cream/80 hover:border-primary hover:text-primary"
+                    }`}
+                  >
+                    {c.label}
+                  </button>
                 ))}
               </div>
-            </div>
-          ))}
+
+              {categories.map((c) => {
+                const catItems = items.filter((i) => i.category_id === c.id);
+                if (catItems.length === 0) return null;
+                return (
+                  <div key={c.id} id={`cat-${c.slug}`} className="mb-20 scroll-mt-40">
+                    <Ornament label={c.label} />
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                      {catItems.map((it) => (
+                        <ItemCard
+                          key={it.id}
+                          item={it}
+                          onAdd={() => {
+                            add({ id: it.id, name: it.name, price: Number(it.price), image_url: it.image_url });
+                            toast({ title: "Ajouté au panier", description: it.name });
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
         </div>
       </section>
 
