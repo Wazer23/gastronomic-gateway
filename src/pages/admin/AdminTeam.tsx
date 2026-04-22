@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -53,7 +52,7 @@ const AdminTeam = () => {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="p-6 lg:p-10 max-w-4xl mx-auto">
         <div className="mb-8">
           <p className="eyebrow">Gestion des accès</p>
@@ -102,7 +101,7 @@ const AdminTeam = () => {
           </div>
         )}
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,7 +145,7 @@ const AdminMenu = () => {
   };
 
   return (
-    <AdminLayout>
+    <>
       <div className="p-6 lg:p-10 max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-10">
           <div>
@@ -265,7 +264,7 @@ const AdminMenu = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </AdminLayout>
+    </>
   );
 };
 
