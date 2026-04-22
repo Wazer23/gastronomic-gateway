@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -58,7 +57,7 @@ const AdminReservations = () => {
   const filtered = filter === "all" ? list : list.filter((r) => r.status === filter);
 
   return (
-    <AdminLayout>
+    <>
       <div className="p-6 lg:p-10 max-w-7xl mx-auto">
         <div className="mb-8">
           <p className="eyebrow">Demandes de table</p>
@@ -122,7 +121,7 @@ const AdminReservations = () => {
           </div>
         )}
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
@@ -52,7 +51,7 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <AdminLayout>
+    <>
       <div className="p-6 lg:p-10 max-w-7xl mx-auto">
         <div className="mb-10">
           <p className="eyebrow">Tableau de bord</p>
@@ -114,7 +113,7 @@ const AdminDashboard = () => {
           </Card>
         </div>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

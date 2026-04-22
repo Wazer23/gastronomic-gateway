@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,7 +77,7 @@ const AdminHours = () => {
   const orderedDays = [1, 2, 3, 4, 5, 6, 0];
 
   return (
-    <AdminLayout>
+    <>
       <div className="p-6 lg:p-10 max-w-5xl mx-auto">
         <div className="mb-10">
           <p className="eyebrow">Disponibilité du restaurant</p>
@@ -158,7 +157,7 @@ const AdminHours = () => {
           </div>
         )}
       </div>
-    </AdminLayout>
+    </>
   );
 };
 

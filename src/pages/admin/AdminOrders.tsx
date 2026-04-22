@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,7 +61,7 @@ const AdminOrders = () => {
   });
 
   return (
-    <AdminLayout>
+    <>
       <div className="p-6 lg:p-10 max-w-7xl mx-auto">
         <div className="mb-8">
           <p className="eyebrow">Click & Collect</p>
@@ -126,7 +125,7 @@ const AdminOrders = () => {
           </div>
         )}
       </div>
-    </AdminLayout>
+    </>
   );
 };
 
