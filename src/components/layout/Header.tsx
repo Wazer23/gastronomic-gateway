@@ -92,18 +92,18 @@ export const Header = () => {
 
       {/* Mobile menu */}
       <div
-        className={`lg:hidden fixed inset-0 z-50 bg-night-deep !bg-opacity-100 transition-all duration-500 ${
+        className={`lg:hidden fixed inset-0 z-[100] transition-all duration-500 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
-        style={{ backgroundColor: "hsl(var(--night-deep))" }}
+        style={{ backgroundColor: "hsl(222 55% 5%)" }}
       >
-        <div className="flex justify-between items-center p-6">
+        <div className="flex justify-between items-center p-6 relative z-10">
           <img src={logo} alt="" className="h-12 w-auto" />
           <button onClick={() => setOpen(false)} aria-label="Fermer" className="text-cream p-2">
             <X className="w-6 h-6" />
           </button>
         </div>
-        <nav className="flex flex-col items-center gap-8 mt-12">
+        <nav className="flex flex-col items-center gap-8 mt-12 relative z-10">
           {links.map((l, i) => (
             <NavLink
               key={l.to}
