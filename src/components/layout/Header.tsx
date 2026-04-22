@@ -92,9 +92,10 @@ export const Header = () => {
 
       {/* Mobile menu */}
       <div
-        className={`lg:hidden fixed inset-0 z-50 bg-night-deep transition-all duration-500 ${
+        className={`lg:hidden fixed inset-0 z-50 bg-night-deep !bg-opacity-100 transition-all duration-500 ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
+        style={{ backgroundColor: "hsl(var(--night-deep))" }}
       >
         <div className="flex justify-between items-center p-6">
           <img src={logo} alt="" className="h-12 w-auto" />

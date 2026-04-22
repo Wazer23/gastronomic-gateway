@@ -24,8 +24,8 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-hero" />
         <div className="absolute inset-0 bg-gradient-to-b from-night/40 via-transparent to-night" />
 
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center container-luxury">
-          <p className="eyebrow mb-6 animate-fade-in" style={{ animationDelay: "200ms" }}>
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center container-luxury pt-24 md:pt-20">
+          <p className="eyebrow mb-6 animate-fade-in mt-8 md:mt-0" style={{ animationDelay: "200ms" }}>
             Restaurant · Ay-sur-Moselle
           </p>
           <h1
