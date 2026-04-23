@@ -24,8 +24,8 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-hero" />
         <div className="absolute inset-0 bg-gradient-to-b from-night/40 via-transparent to-night" />
 
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center container-luxury pt-24 md:pt-20">
-          <p className="eyebrow mb-6 animate-fade-in mt-8 md:mt-0" style={{ animationDelay: "200ms" }}>
+        <div className="relative z-10 h-full flex-col text-center container-luxury pt-24 md:pt-20 flex items-center justify-start">
+          <p className="eyebrow mb-6 animate-fade-in mt-8 md:mt-0 my-[30px]" style={{ animationDelay: "200ms" }}>
             Restaurant · Ay-sur-Moselle
           </p>
           <h1
@@ -37,7 +37,7 @@ const Index = () => {
           </h1>
           <Ornament />
           <p
-            className="max-w-2xl text-lg md:text-xl text-cream/80 font-light leading-relaxed mb-12 animate-fade-in"
+            className="max-w-2xl text-lg md:text-xl text-cream/80 font-light leading-relaxed animate-fade-in mb-[40px]"
             style={{ animationDelay: "700ms" }}
           >
             Belles viandes maturées, pâtes fraîches artisanales et cuisine du moment.
