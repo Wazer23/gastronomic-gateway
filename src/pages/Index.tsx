@@ -156,7 +156,7 @@ const Index = () => {
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-night/60" />
+        <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 h-full flex items-center">
           <div className="container-luxury">
             <div className="max-w-xl reveal">
