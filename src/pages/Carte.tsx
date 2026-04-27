@@ -5,6 +5,7 @@ import { ShoppingBag } from "lucide-react";
 import beefAged from "@/assets/beef-aged.jpg";
 import { useMenuData, DbMenuItem } from "@/hooks/useMenuData";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 const ItemRow = ({ item }: { item: DbMenuItem }) => (
   <div className="group py-6 border-b border-border/40 last:border-0 transition-colors hover:bg-card/40 px-4 -mx-4">
@@ -23,6 +24,25 @@ const ItemRow = ({ item }: { item: DbMenuItem }) => (
 
 const Carte = () => {
   const { categories, items, loading } = useMenuData(true);
+
+  // Re-observer les blocs .reveal une fois les données chargées
+  useEffect(() => {
+    if (loading) return;
+    const els = document.querySelectorAll(".reveal:not(.is-visible)");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.05 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [loading, categories.length, items.length]);
 
   return (
     <Layout>
