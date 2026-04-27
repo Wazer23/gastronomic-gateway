@@ -49,7 +49,7 @@ const Carte = () => {
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[450px]">
         <img src={beefAged} alt="" className="absolute inset-0 w-full h-full object-cover animate-slow-zoom" />
-        <div className="absolute inset-0 bg-night/75" />
+        <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center container-luxury">
           <p className="eyebrow mb-6 animate-fade-in">À table</p>
           <h1 className="font-display text-5xl md:text-7xl text-cream animate-fade-in-up">
